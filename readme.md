@@ -10,8 +10,9 @@ Implementation from scratch of **YOLOv1** for object detection, with a demonstra
 yolov1-from-scratch/
 ├── src/
 │ ├── init.py
-│ ├── model.py
+│ ├── yolo_model.py
 │ ├── loss.py
+│ |--- dataloader.py
 │ ├── utils.py
 ├── notebooks/
 │ └── yolov1-from-scratch.ipynb
