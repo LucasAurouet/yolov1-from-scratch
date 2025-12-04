@@ -1,6 +1,6 @@
-\# YOLOv1 From Scratch
+# YOLOv1 From Scratch
 
-Implementation from scratch of \*\*YOLOv1 (You Only Look Once)\*\* for object detection, with a demonstration on a playing cards dataset.
+Implementation from scratch of **YOLOv1** for object detection, with a demonstration on a playing cards dataset.
 
 ---
 
