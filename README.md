@@ -14,7 +14,7 @@ Implementation from scratch of **YOLOv1** for object detection, with a demonstra
 		- loss.py
 		- utils.py
 	- notebooks
-		- yolov1-from-scratch
+		- yolov1-from-scratch.ipynb
 	- README.md
 	- requirements.txt
 ```
