@@ -16,7 +16,7 @@ Implementation from scratch of **YOLOv1** for object detection, with a demonstra
 	- notebooks
 		- yolov1-from-scratch
 	- README.md
-	-requirements.txt
+	- requirements.txt
 ```
 
 ---
