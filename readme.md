@@ -1,52 +1,31 @@
 \# YOLOv1 From Scratch
 
-
-
 Implementation from scratch of \*\*YOLOv1 (You Only Look Once)\*\* for object detection, with a demonstration on a playing cards dataset.
 
-
-
 ---
 
+## Project Structure
 
-
-\## 📂 Project Structureyolov1-from-scratch/
-
+```
+yolov1-from-scratch/
 │
-
-├── src/                  # Source code (package)
-
-│   ├── \_\_init\_\_.py
-
-│   ├── yolo\_model.py          # YOLOv1 model architecture
-
-│   ├── loss.py           # YOLOv1 loss function
-
-│   ├── utils.py          # Utilities: IoU, indicator functions
-
+├── src/
+│ ├── init.py
+│ ├── model.py
+│ ├── loss.py
+│ ├── utils.py
+│ └── train.py
 │
-
-│
-
-├── notebooks/            # Jupyter notebooks
-
-│   └── yolov1-from-scrach.ipynb  # Demo on playing cards detection
-
-│
-
-├── outputs/              # Trained models, logs, results (ignored in Git)
-
-├── requirements.txt      # Python dependencies
-
+├── notebooks/
+│ └── cards_demo.ipynb
+├── outputs/
+├── requirements.txt
 └── README.md
-
-
+```
 
 ---
 
-
-
-\## Features
+## Features
 
 
 
@@ -70,7 +49,7 @@ Implementation from scratch of \*\*YOLOv1 (You Only Look Once)\*\* for object de
 
 
 
-\## Installation
+## Installation
 
 
 
@@ -102,7 +81,7 @@ pip install -r requirements.txt
 
 
 
-\## Notebook Demo
+## Notebook Demo
 
 
 
@@ -114,7 +93,7 @@ pip install -r requirements.txt
 
 
 
-\## Structure Highlights
+## Structure Highlights
 
 
 
@@ -130,7 +109,7 @@ pip install -r requirements.txt
 
 
 
-\## Notes
+## Notes
 
 
 
