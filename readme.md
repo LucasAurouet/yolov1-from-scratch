@@ -8,17 +8,13 @@ Implementation from scratch of **YOLOv1** for object detection, with a demonstra
 
 ```
 yolov1-from-scratch/
-│
 ├── src/
 │ ├── init.py
 │ ├── model.py
 │ ├── loss.py
 │ ├── utils.py
-│ └── train.py
-│
 ├── notebooks/
-│ └── cards_demo.ipynb
-├── outputs/
+│ └── yolov1-from-scratch.ipynb
 ├── requirements.txt
 └── README.md
 ```
