@@ -1,7 +1,7 @@
 import torch.nn as nn
 
 class YOLOv1(nn.Module):
-    def __init__(self, S=7, B=2, C=10, input_channels=3):
+    def __init__(self, S=7, B=2, C=52):
         super().__init__()
         self.S = S
         self.B = B
