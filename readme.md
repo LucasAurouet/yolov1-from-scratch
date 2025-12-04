@@ -7,17 +7,16 @@ Implementation from scratch of **YOLOv1** for object detection, with a demonstra
 ## Project Structure
 
 ```
-yolov1-from-scratch/
-├── src/
-│ ├── init.py
-│ ├── yolo_model.py
-│ ├── loss.py
-│ |--- dataloader.py
-│ ├── utils.py
-├── notebooks/
-│ └── yolov1-from-scratch.ipynb
-├── requirements.txt
-└── README.md
+- yolov1-from-scratch
+	- src
+		- yolo_model.py
+		- dataloader.py
+		- loss.py
+		- utils.py
+	- notebooks
+		- yolov1-from-scratch
+	- README.md
+	-requirements.txt
 ```
 
 ---
