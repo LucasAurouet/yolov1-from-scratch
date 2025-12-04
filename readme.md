@@ -1,14 +1,16 @@
-YOLOv1 From Scratch
+\# YOLOv1 From Scratch
 
 
 
-Implementation from scratch of YOLOv1 (You Only Look Once) for object detection, with a demonstration on a playing cards dataset.
+Implementation from scratch of \*\*YOLOv1 (You Only Look Once)\*\* for object detection, with a demonstration on a playing cards dataset.
 
 
 
-📂 Project Structure
+---
 
-yolov1-from-scratch/
+
+
+\## 📂 Project Structureyolov1-from-scratch/
 
 │
 
@@ -16,19 +18,19 @@ yolov1-from-scratch/
 
 │   ├── \_\_init\_\_.py
 
-│   ├── model.py          # YOLOv1 model architecture
+│   ├── yolo\_model.py          # YOLOv1 model architecture
 
 │   ├── loss.py           # YOLOv1 loss function
 
-│   ├── utils.py          # Utilities: IoU, data preprocessing, indicator functions
+│   ├── utils.py          # Utilities: IoU, indicator functions
 
-│   └── train.py          # Training loop
+│
 
 │
 
 ├── notebooks/            # Jupyter notebooks
 
-│   └── cards\_demo.ipynb  # Demo on playing cards detection
+│   └── yolov1-from-scrach.ipynb  # Demo on playing cards detection
 
 │
 
@@ -40,31 +42,35 @@ yolov1-from-scratch/
 
 
 
-Features
+---
 
 
 
-YOLOv1 model implemented from scratch in PyTorch
+\## Features
 
 
 
-Modular code with separate model, loss, utils, and train
+* YOLOv1 model implemented from scratch in PyTorch. Modular code with separate model, loss, utils
 
 
 
-Configurable hyperparameters for grid size (S), bounding boxes (B), and loss weights
+* Configurable hyperparameters for grid size (S), bounding boxes (B), and loss weights
 
 
 
-Example dataset: playing cards
+* Example dataset: playing cards from roboflow (https://universe.roboflow.com/augmented-startups/playing-cards-ow27d)
 
 
 
-Notebook demo for inference and visualization
+* Notebook demo for inference and visualization
 
 
 
-Installation
+---
+
+
+
+\## Installation
 
 
 
@@ -72,9 +78,13 @@ Clone the repository:
 
 
 
+```
+
 git clone https://github.com/username/yolov1-from-scratch.git
 
 cd yolov1-from-scratch
+
+```
 
 
 
@@ -82,49 +92,50 @@ Install dependencies:
 
 
 
+```
+
 pip install -r requirements.txt
 
+```
 
-
-Notebook Demo
-
-
-
-Open notebooks/yolov1-card-detection.ipynb
+---
 
 
 
-Demonstrates inference, visualization, and evaluation on the playing cards dataset.
+\## Notebook Demo
 
 
 
-Structure Highlights
+* Open notebooks/yolov1-card-detection.ipynb
 
 
 
-src/: Python package for YOLOv1, easy to import in notebooks
+* Demonstrates inference, visualization, and evaluation on the playing cards dataset.
 
 
 
-notebooks/: Examples and demos
+\## Structure Highlights
 
 
 
-outputs/: Trained models and visualizations (ignored in Git)
+* src/: Python package for YOLOv1, easy to import in notebooks
 
 
 
-Notes
+* notebooks/: Examples and demos
 
 
 
-Outputs (.pt models, logs) are excluded via .gitignore
+* outputs/: Trained models and visualizations (ignored in Git)
 
 
 
-Configurable parameters allow you to adjust for different datasets
+\## Notes
 
 
 
-Designed to run on GPU
+* Outputs (.pt models, logs) are excluded via .gitignore
 
+
+
+* Designed to run on GPU
