@@ -4,11 +4,6 @@ from .utils import ind_ij
 def yolo_loss(pred, true, S, B, C, lambda_coord, lambda_noobj):
     # Computes the loss between the (N, S, S, C+5*B) true and predicted tensors
     
-    # Extract config 
-    batch_size = true.shape[0]
-    print('batch_size', batch_size)
-    
-    
     def coord_loss(pred_coord, true_coord, ind, lambda_coord=5):
         # coordinates loss -> boxes location
         loss_xy = (pred_coord[..., :2] - true_coord[..., :2])**2
@@ -38,17 +33,21 @@ def yolo_loss(pred, true, S, B, C, lambda_coord, lambda_noobj):
         true = true.unsqueeze(0) 
     else:
         batch_size = pred.shape[0]
-          
-    # Reshape the output tensors
     
     # x, y, w, h, confidence
     # (S, S, B * 5 + C) -> (S, S, B, 5)
     true_boxes = true[..., 0:B * 5].reshape(batch_size, S, S, B, 5)
     pred_boxes = pred[..., 0:B * 5].reshape(batch_size, S, S, B, 5)
+    
     # One-hot predicted classes
     # (S, S, B * 5 + C) -> (S, S, B, C)
     pred_classes = pred[..., B * 5:B * 5 + C]
     true_classes = true[..., B * 5:B * 5 + C]
+    
+    # Extract the confidence
+    # (N, S, S, B)
+    pred_conf = pred_boxes[..., 4] 
+    true_conf = true_boxes[..., 4]
     
     # Extract the coordinates
     # (N, S, S, B, 4)
@@ -58,11 +57,6 @@ def yolo_loss(pred, true, S, B, C, lambda_coord, lambda_noobj):
     pred_xy = pred_coord[..., :2]
     pred_wh = torch.exp(pred_coord[..., 2:4])
     pred_coord = torch.cat([pred_xy, pred_wh], dim=-1)
-    
-    # Extract the confidence
-    # (N, S, S, B)
-    pred_conf = pred_boxes[..., 4] 
-    true_conf = true_boxes[..., 4]
     
     # compute IOUs and identify responsible boxes (largest iou)
     obj_mask = (true_conf[..., 0] > 0).float()  # (N, S, S)
@@ -74,4 +68,5 @@ def yolo_loss(pred, true, S, B, C, lambda_coord, lambda_noobj):
         + conf_loss(pred_conf, ious, ind, lambda_noobj)
     )
     
+    # Normalize by batch_size
     return total_loss / batch_size
