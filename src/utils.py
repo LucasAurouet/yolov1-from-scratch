@@ -74,7 +74,7 @@ def draw_output(img, pred, t, config, transform=False):
             cell_x2 = int((i + 1) * (img_width / S))
             cell_y1 = int(j * (img_height / S))
             cell_y2 = int((j + 1) * (img_height / S))
-            print(print(img.dtype))
+            print(img.dtype)
             print((cell_x1, cell_y1), (cell_x2, cell_y2))
             cv2.rectangle(img, (cell_x1, cell_y1), (cell_x2, cell_y2), (0, 0, 255))
     
