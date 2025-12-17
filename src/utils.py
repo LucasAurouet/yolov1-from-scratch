@@ -65,15 +65,15 @@ def draw_output(img, pred, t, config, transform=False):
                     score = pred_conf[i,j,b].item()
                     
                     # Draw the box, class and confidence score
-                    cv2.rectangle(img, (x1,y1), (x2,y2), (0, 255, 0), 1)
+                    cv2.rectangle(img, (x1,y1), (x2,y2), (0.0, 1.0, 0.0), 1)
                     cv2.putText(img, f"{class_id}:{score:.2f}", (x1, y1-5),
-                                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1)
+                                cv2.FONT_HERSHEY_SIMPLEX, 1, (0.0, 1.0, 0.0), 1)
             # Draw the cells 
             cell_x1 = int(i * (img_width / S))
             cell_x2 = int((i + 1) * (img_width / S))
             cell_y1 = int(j * (img_height / S))
             cell_y2 = int((j + 1) * (img_height / S))
-            cv2.rectangle(img, (cell_x1, cell_y1), (cell_x2, cell_y2), (0, 0, 255))
+            cv2.rectangle(img, (cell_x1, cell_y1), (cell_x2, cell_y2), (0.0, 0.0, 1.0))
     
     # Show the image
     plt.imshow(img)

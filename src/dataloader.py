@@ -79,6 +79,7 @@ class YoloDataset(Dataset):
         # Image
         image_file = self.data_dir + '/' + self.files_list[idx] + '.jpg'
         image = cv2.imread(image_file)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         image = cv2.resize(image, (448, 448))
         image_norm = image / 255.0
         image_tensor = torch.tensor(image_norm, dtype=torch.float32).permute(2, 0, 1)
