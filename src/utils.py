@@ -11,33 +11,27 @@ def draw_output(img, pred, t, config, transform=False):
     S = config['S']
     B = config['B']
     C = config['C']
-    
     # Convert the image tensor to numpy array for cv2 and matplotlib
     img = img.permute(1, 2, 0).numpy().copy()
     img_width, img_height = img.shape[:2]
-
     # x, y, w, h, confidence predictions
     # (S, S, B * 5 + C) -> (S, S, B, 5)
     pred_boxes = pred[..., 0:B * 5].reshape(S, S, B, 5)
-    
     # One-hot predicted classes
     # (S, S, B * 5 + C) -> (S, S, B, C)
     pred_classes = pred[..., B * 5:B * 5 + C]
-    
     # Confidence 
     # (N, S, S, B)
     pred_conf = pred_boxes[..., 4] 
-    
     # Relative corrdinates
     # (N, S, S, B, 4)
-    pred_coord = pred_boxes[..., :4] 
-
+    pred_coord = pred_boxes[..., :4]
     # Apply the output transformations 
     if transform:
         pred_xy = pred_coord[..., :2]
         pred_wh = torch.exp(pred_coord[..., 2:4])
         pred_coord = torch.cat([pred_xy, pred_wh], dim=-1)
-    
+
     for i in range(S):
         for j in range(S):
             for b in range(B):
@@ -49,21 +43,17 @@ def draw_output(img, pred, t, config, transform=False):
                     # Transform the absolute [0, 1] coordinates to pixel values
                     x_center_px = x_center * img_width
                     y_center_px = y_center * img_height
-                    
                     # Box dimensions (pixels)
                     w_px = w * img_width
                     h_px = h * img_height
-                    
                     # Box corners
                     x1 = int(x_center_px - w_px / 2)
                     y1 = int(y_center_px - h_px / 2)
                     x2 = int(x_center_px + w_px / 2)
                     y2 = int(y_center_px + h_px / 2)
-                    
                     # Class and confidence for the current cell
                     class_id = pred_classes[i,j].argmax().item()
                     score = pred_conf[i,j,b].item()
-                    
                     # Draw the box, class and confidence score
                     cv2.rectangle(img, (x1,y1), (x2,y2), (0.0, 1.0, 0.0), 1)
                     cv2.putText(img, f"{class_id}:{score:.2f}", (x1, y1-5),
@@ -88,13 +78,11 @@ def compute_iou(pred_boxes, true_boxes):
     pred_x2y2 = pred_boxes[..., :2] + pred_boxes[..., 2:] / 2
     true_x1y1 = true_boxes[..., :2] - true_boxes[..., 2:] / 2
     true_x2y2 = true_boxes[..., :2] + true_boxes[..., 2:] / 2
-    
     # Intersection
     inter_x1y1 = torch.max(pred_x1y1, true_x1y1)
     inter_x2y2 = torch.min(pred_x2y2, true_x2y2)
     inter_wh = (inter_x2y2 - inter_x1y1)
     inter_area = inter_wh[..., 0] * inter_wh[..., 1]
-    
     # Union
     pred_area = pred_boxes[..., 2] * pred_boxes[..., 3]
     true_area = true_boxes[..., 2] * true_boxes[..., 3]
@@ -107,17 +95,13 @@ def compute_iou(pred_boxes, true_boxes):
    
 def ind_ij(pred_boxes, true_boxes, obj_mask):
     # Indicator vector to detect the boxes responsible for the detection
-    
     # IOU
     ious = compute_iou(pred_boxes, true_boxes) 
-    
     # Create the indicator vector 
     ind = torch.zeros_like(ious)
-    
     # Find the boxes responsible for the object
     b_max = torch.argmax(ious, dim=-1, keepdim=True) 
     ind.scatter_(-1, b_max, 1.0)
-    
     # if no object, ind_ij = 0
     ind = ind * obj_mask.unsqueeze(-1)
     

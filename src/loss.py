@@ -8,9 +8,7 @@ def yolo_loss(pred, true, S, B, C, lambda_coord, lambda_noobj):
         # coordinates loss -> boxes location
         loss_xy = (pred_coord[..., :2] - true_coord[..., :2])**2
         loss_wh = (torch.sqrt(pred_coord[..., 2:]) - torch.sqrt(true_coord[..., 2:]))**2
-
         loss_xywh = torch.cat([loss_xy, loss_wh], dim=-1)
-        
         # Apply indicator mask (only the responsible box)
         loss_xywh = loss_xywh * ind.unsqueeze(-1)
         
@@ -38,17 +36,14 @@ def yolo_loss(pred, true, S, B, C, lambda_coord, lambda_noobj):
     # (S, S, B * 5 + C) -> (S, S, B, 5)
     true_boxes = true[..., 0:B * 5].reshape(batch_size, S, S, B, 5)
     pred_boxes = pred[..., 0:B * 5].reshape(batch_size, S, S, B, 5)
-    
     # One-hot predicted classes
     # (S, S, B * 5 + C) -> (S, S, B, C)
     pred_classes = pred[..., B * 5:B * 5 + C]
     true_classes = true[..., B * 5:B * 5 + C]
-    
     # Extract the confidence
     # (N, S, S, B)
     pred_conf = pred_boxes[..., 4] 
     true_conf = true_boxes[..., 4]
-    
     # Extract the coordinates
     # (N, S, S, B, 4)
     pred_coord = pred_boxes[..., :4] 
@@ -57,7 +52,6 @@ def yolo_loss(pred, true, S, B, C, lambda_coord, lambda_noobj):
     pred_xy = pred_coord[..., :2]
     pred_wh = torch.exp(pred_coord[..., 2:4])
     pred_coord = torch.cat([pred_xy, pred_wh], dim=-1)
-    
     # compute IOUs and identify responsible boxes (largest iou)
     obj_mask = (true_conf[..., 0] > 0).float()  # (N, S, S)
     ind, ious = ind_ij(pred_coord, true_coord, obj_mask)
