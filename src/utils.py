@@ -18,15 +18,19 @@ def draw_output(img, pred, t, config, transform=False):
     # x, y, w, h, confidence predictions
     # (S, S, B * 5 + C) -> (S, S, B, 5)
     pred_boxes = pred[..., 0:B * 5].reshape(S, S, B, 5)
+    
     # One-hot predicted classes
     # (S, S, B * 5 + C) -> (S, S, B, C)
     pred_classes = pred[..., B * 5:B * 5 + C]
     
-    # Relative corrdinates
-    pred_coord = pred_boxes[..., :4] # (N, S, S, B, 4)
     # Confidence 
-    pred_conf = pred_boxes[..., 4] # (N, S, S, B)
+    # (N, S, S, B)
+    pred_conf = pred_boxes[..., 4] 
     
+    # Relative corrdinates
+    # (N, S, S, B, 4)
+    pred_coord = pred_boxes[..., :4] 
+
     # Apply the output transformations 
     if transform:
         pred_xy = pred_coord[..., :2]
@@ -44,9 +48,11 @@ def draw_output(img, pred, t, config, transform=False):
                     # Transform the absolute [0, 1] coordinates to pixel values
                     x_center_px = x_center * img_width
                     y_center_px = y_center * img_height
+                    
                     # Box dimensions (pixels)
                     w_px = w * img_width
                     h_px = h * img_height
+                    
                     # Box corners
                     x1 = int(x_center_px - w_px / 2)
                     y1 = int(y_center_px - h_px / 2)
@@ -56,19 +62,21 @@ def draw_output(img, pred, t, config, transform=False):
                     # Class and confidence for the current cell
                     class_id = pred_classes[i,j].argmax().item()
                     score = pred_conf[i,j,b].item()
+                    
                     # Draw the box
-                    color = (0,255,0)
+                    color = (0, 255, 0)
                     cv2.rectangle(img, (x1,y1), (x2,y2), color, 1)
                     cv2.putText(img, f"{class_id}:{score:.2f}", (x1, y1-5),
                                 cv2.FONT_HERSHEY_SIMPLEX, 1, color, 1)
-            # Draws the cells 
+            # Draw the cells 
             cell_x1 = int(i * (img_width / S))
             cell_x2 = int((i + 1) * (img_width / S))
             cell_y1 = int(j * (img_height / S))
             cell_y2 = int((j + 1) * (img_height / S))
             cv2.rectangle(img, (cell_x1, cell_y1), (cell_x2, cell_y2), (0,0,255))
     
-    # Show the image 
+    # Show the image
+    print(img)
     plt.imshow(img)
     plt.axis("off")
     plt.show()
