@@ -13,6 +13,7 @@ def draw_output(img, pred, t, config, transform=False):
     
     # Convert the image tensor to numpy array for cv2 and matplotlib
     img = img.numpy().copy() * 255
+    print(img)
     img_width, img_height = img.shape[:2]
 
     # x, y, w, h, confidence predictions
