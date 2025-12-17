@@ -1,16 +1,13 @@
 import torch
 from .utils import ind_ij
 
-def yolo_loss(pred, true, config):
+def yolo_loss(pred, true, S, B, C, lambda_coord, lambda_noobj):
     # Computes the loss between the (N, S, S, C+5*B) true and predicted tensors
     
     # Extract config 
-    S = config['S']
-    B = config['B']
-    C = config['C']
-    batch_size = config['batch_size']
-    lambda_coord = config['lambda_coord']
-    lambda_noobj = config['lambda_noobj']
+    batch_size = true.shape[0]
+    print('batch_size', batch_size)
+    
     
     def coord_loss(pred_coord, true_coord, ind, lambda_coord=5):
         # coordinates loss -> boxes location
