@@ -98,11 +98,11 @@ def compute_iou(pred_boxes, true_boxes):
 
     return ious
    
-def ind_ij(self, pred_boxes, true_boxes, obj_mask):
+def ind_ij(pred_boxes, true_boxes, obj_mask):
     # Indicator vector to detect the boxes responsible for the detection
     
     # IOU
-    ious = self.compute_iou(pred_boxes, true_boxes) 
+    ious = compute_iou(pred_boxes, true_boxes) 
     
     # Create the indicator vector 
     ind = torch.zeros_like(ious)
