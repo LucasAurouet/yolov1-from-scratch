@@ -13,8 +13,7 @@ def draw_output(img, pred, t, config, transform=False):
     C = config['C']
     
     # Convert the image tensor to numpy array for cv2 and matplotlib
-    img = img.numpy().copy() * 255
-    img = img.astype(np.uint8)
+    img = img.permute(1, 2, 0).numpy().copy()
     img_width, img_height = img.shape[:2]
 
     # x, y, w, h, confidence predictions
@@ -74,8 +73,6 @@ def draw_output(img, pred, t, config, transform=False):
             cell_x2 = int((i + 1) * (img_width / S))
             cell_y1 = int(j * (img_height / S))
             cell_y2 = int((j + 1) * (img_height / S))
-            print(img.shape)
-            print((cell_x1, cell_y1), (cell_x2, cell_y2))
             cv2.rectangle(img, (cell_x1, cell_y1), (cell_x2, cell_y2), (0, 0, 255))
     
     # Show the image
