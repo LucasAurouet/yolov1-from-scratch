@@ -37,34 +37,35 @@ class YoloDataset(Dataset):
         return objs
     
     def label2tensor(self, objs):
-        # converts a list of labels in a YOLOv1 tensor
-        # returns a tensor of shape (S, S, C+B, 5)
+        tensor = np.zeros((self.S, self.S, self.C + self.B*5))
         
-        tensor = np.zeros(shape=(self.S, self.S, (self.C+self.B*5)))
-        
+        # create a dictionnary of shape
+        # (row, col) : list of objs
+        cells = {}
+        # Store the all the objects
         for obj in objs:
-            y = obj[0]
-            x_pos = obj[1]
-            y_pos = obj[2]
-            w = obj[3]
-            h = obj[4]
-            
-            # finds the cell where the object lies 
+            y_class, x_pos, y_pos, w, h = obj
             cell_row = int(self.S * y_pos)
             cell_col = int(self.S * x_pos)
+            if (cell_row, cell_col) not in cells:
+                cells[(cell_row, cell_col)] = []
+            cells[(cell_row, cell_col)].append(obj)
+        
+        for (cell_row, cell_col), cell_objs in cells.items():
+            # Maximum of B objects per cell
+            cell_objs = cell_objs[:self.B]
+            # If less than B objects, duplicate 
+            while len(cell_objs) < self.B:
+                cell_objs.append(cell_objs[0])
             
-            # finds the position of the object w.r.t the cell
-            x_cell = self.S * x_pos - cell_col
-            y_cell = self.S * y_pos - cell_row
-            
-            # fill the tensor
-            for b in range(self.B):
+            # Fill the tensor
+            for b, obj in enumerate(cell_objs):
+                y_class, x_pos, y_pos, w, h = obj
+                x_cell = self.S * x_pos - cell_col
+                y_cell = self.S * y_pos - cell_row
                 start = b * 5
-                # Store the x, y, w, h, confidence 
                 tensor[cell_row, cell_col, start:start+5] = [x_cell, y_cell, w, h, 1]
-                
-                # Store the one hot encoded class label
-                tensor[cell_row, cell_col, 5 * self.B + y] = 1
+                tensor[cell_row, cell_col, 5*self.B + y_class] = 1
     
         return torch.tensor(tensor, dtype=torch.float32)
     
