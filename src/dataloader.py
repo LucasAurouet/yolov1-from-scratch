@@ -39,35 +39,21 @@ class YoloDataset(Dataset):
     def label2tensor(self, objs):
         tensor = np.zeros((self.S, self.S, self.C + self.B*5))
         
-        # create a dictionnary of shape
-        # (row, col) : list of objs
-        cells = {}
-        # Store the all the objects
         for obj in objs:
             y_class, x_pos, y_pos, w, h = obj
             cell_row = int(self.S * y_pos)
             cell_col = int(self.S * x_pos)
-            if (cell_row, cell_col) not in cells:
-                cells[(cell_row, cell_col)] = []
-            cells[(cell_row, cell_col)].append(obj)
-        
-        for (cell_row, cell_col), cell_objs in cells.items():
-            # Maximum of B objects per cell
-            cell_objs = cell_objs[:self.B]
-            # If less than B objects, duplicate 
-            while len(cell_objs) < self.B:
-                cell_objs.append(cell_objs[0])
             
-            # Fill the tensor
-            for b, obj in enumerate(cell_objs):
-                y_class, x_pos, y_pos, w, h = obj
+            # Keep the first object only
+            if tensor[cell_row, cell_col, 4] == 0:
                 x_cell = self.S * x_pos - cell_col
                 y_cell = self.S * y_pos - cell_row
-                start = b * 5
-                tensor[cell_row, cell_col, start:start+5] = [x_cell, y_cell, w, h, 1]
-                if b==0:
-                    tensor[cell_row, cell_col, 5*self.B + y_class] = 1
-    
+            
+                for b in range(self.B):
+                    tensor[cell_row, cell_col, b*5:b*5+5] = [x_cell, y_cell, w, h, 1]
+            
+                tensor[cell_row, cell_col, self.B*5 + y_class] = 1
+
         return torch.tensor(tensor, dtype=torch.float32)
     
     def __getitem__(self, idx):
