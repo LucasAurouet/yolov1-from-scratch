@@ -65,7 +65,8 @@ class YoloDataset(Dataset):
                 y_cell = self.S * y_pos - cell_row
                 start = b * 5
                 tensor[cell_row, cell_col, start:start+5] = [x_cell, y_cell, w, h, 1]
-                tensor[cell_row, cell_col, 5*self.B + y_class] = 1
+                if b==0:
+                    tensor[cell_row, cell_col, 5*self.B + y_class] = 1
     
         return torch.tensor(tensor, dtype=torch.float32)
     
