@@ -29,8 +29,7 @@ def draw_output(img, pred, t, config, transform=False):
     # Apply the output transformations 
     if transform:
         pred_xy = pred_coord[..., :2]
-        # pred_wh = torch.exp(pred_coord[..., 2:4])
-        pred_wh = torch.clamp(pred_coord[..., 2:4], min=1e-6)
+        pred_wh = torch.exp(pred_coord[..., 2:4])
         pred_coord = torch.cat([pred_xy, pred_wh], dim=-1)
 
     for i in range(S):

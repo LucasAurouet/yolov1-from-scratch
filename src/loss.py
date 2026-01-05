@@ -51,8 +51,7 @@ def yolo_loss(pred, true, S, B, C, lambda_coord, lambda_noobj):
     
     # Transform to avoid negative values and undefined roots 
     pred_xy = pred_coord[..., :2]
-    # pred_wh = torch.exp(pred_coord[..., 2:4])
-    pred_wh = torch.clamp(pred_coord[..., 2:4], min=1e-6)
+    pred_wh = torch.exp(pred_coord[..., 2:4])
     pred_coord = torch.cat([pred_xy, pred_wh], dim=-1)
     
     # compute IOUs and identify responsible boxes (largest iou)
