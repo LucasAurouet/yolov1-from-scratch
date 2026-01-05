@@ -81,12 +81,12 @@ def compute_iou(pred_boxes, true_boxes):
     # Intersection
     inter_x1y1 = torch.max(pred_x1y1, true_x1y1)
     inter_x2y2 = torch.min(pred_x2y2, true_x2y2)
-    inter_wh = (inter_x2y2 - inter_x1y1)
+    inter_wh = torch.clamp(inter_x2y2 - inter_x1y1, min=0)
     inter_area = inter_wh[..., 0] * inter_wh[..., 1]
     # Union
     pred_area = pred_boxes[..., 2] * pred_boxes[..., 3]
     true_area = true_boxes[..., 2] * true_boxes[..., 3]
-    union_area = pred_area + true_area - inter_area + 1e-6
+    union_area = pred_area + true_area - inter_area
 
     ious = torch.zeros_like(union_area)
     ious = inter_area / union_area

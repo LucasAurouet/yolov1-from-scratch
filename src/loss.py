@@ -64,9 +64,6 @@ def yolo_loss(pred, true, S, B, C, lambda_coord, lambda_noobj):
         + class_loss(pred_classes, true_classes, obj_mask)
         + conf_loss(pred_conf, ious, ind, lambda_noobj)
     )
-    print('coord : ', coord_loss(pred_coord, true_coord, ind, lambda_coord))
-    print('class : ', class_loss(pred_classes, true_classes, obj_mask))
-    print('conf : ', conf_loss(pred_conf, ious, ind, lambda_noobj))
     
     # Normalize by batch_size
     return total_loss / batch_size
