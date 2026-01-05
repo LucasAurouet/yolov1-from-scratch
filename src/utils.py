@@ -86,10 +86,12 @@ def compute_iou(pred_boxes, true_boxes):
     # Union
     pred_area = pred_boxes[..., 2] * pred_boxes[..., 3]
     true_area = true_boxes[..., 2] * true_boxes[..., 3]
-    union_area = pred_area + true_area - inter_area
+    union_area = pred_area + true_area - inter_area + 1e-6
 
     ious = torch.zeros_like(union_area)
     ious = inter_area / union_area
+    print('inter : ', inter_area)
+    print('union :', union_area)
 
     return ious
    
