@@ -57,7 +57,6 @@ def yolo_loss(pred, true, S, B, C, lambda_coord, lambda_noobj):
     # compute IOUs and identify responsible boxes (largest iou)
     obj_mask = (true_conf[..., 0] > 0).float()  # (N, S, S)
     ind, ious = ind_ij(pred_coord, true_coord, obj_mask)
-    print(ious)
     
     total_loss = (
         coord_loss(pred_coord, true_coord, ind, lambda_coord)
