@@ -90,7 +90,7 @@ def compute_iou(pred_boxes, true_boxes):
 
     ious = torch.zeros_like(union_area)
     ious = inter_area / union_area
-    print(ious)
+
     return ious
    
 def ind_ij(pred_boxes, true_boxes, obj_mask):
