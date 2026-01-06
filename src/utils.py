@@ -1,7 +1,6 @@
 import cv2
 import torch
 import matplotlib.pyplot as plt
-import numpy as np
 
 def draw_output(img, pred, t, config, transform=False):
     # Draws an image with the predicted bounding boxes
